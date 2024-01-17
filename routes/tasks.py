@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Body, File, UploadFile, status, Path
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
-from models.models import Task
+from models.task import Task
 from database.database import db
 from datetime import datetime
 from sqlalchemy import func
@@ -73,6 +73,19 @@ async def delete_task(id: int = Path(..., ge=1)):
     except Exception as e:
         db.rollback()
         return JSONResponse(content={"message" : "Erro ao deletar task"}, status_code=status.HTTP_400_BAD_REQUEST)
+
+@router.get("/tasks/date/{date}")
+async def get_tasks_by_date(date: str):
+    try:
+        tasks = db.query(Task).filter(Task.created_at == date).all()
+        if tasks:
+            return JSONResponse(content={"message" : jsonable_encoder(tasks)}, status_code=status.HTTP_200_OK)
+        
+        return JSONResponse(content={"message" :f"Não há tasks cadastradas para a data {date}"},
+                            status_code=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return JSONResponse(content={"message" : "Erro ao buscar tasks"}, status_code=status.HTTP_400_BAD_REQUEST)
+
 
 @router.get("/tasks/qtd/")
 async def get_qtd_tasks():
