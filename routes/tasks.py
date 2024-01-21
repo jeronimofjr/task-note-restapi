@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, File, UploadFile, status, Path
+from fastapi import APIRouter, Body, File, UploadFile, status, Path, Query
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from models.task import Task
@@ -6,6 +6,9 @@ from database.database import db
 from datetime import datetime
 from sqlalchemy import func
 from schemas.task import TaskCreate
+import pandas
+from collections import defaultdict
+import os
 
 router = APIRouter()
 
@@ -21,6 +24,29 @@ async def get_tasks():
     except Exception as e:
         return JSONResponse(content={"message" : "Erro ao recuperar tasks"},
                             status_code=status.HTTP_400_BAD_REQUEST)
+
+@router.get("/tasks/save")
+async def save_tasks(file_path: str = Query(...)):
+    try:
+        tasks = db.query(Task).filter(Task.completed_at == False).all()
+        if tasks:
+            print([task.title for task in tasks])
+            tasks_unco = defaultdict(list)
+            for task in tasks:
+                tasks_unco["title"].append(task.title)
+                tasks_unco["description"].append(task.description)
+                tasks_unco["created_at"].append(task.created_at)
+            tasks_unco = pandas.DataFrame(tasks_unco)
+            
+            tasks_unco.to_csv(file_path)
+            if os.path.exists(file_path):
+                return JSONResponse(content={"message" : "Arquivo salvo com sucesso"},
+                                    status_code=status.HTTP_200_OK)
+        return JSONResponse(content={"message" :"Não há tasks incompletas cadastradas"},
+                            status_code=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return JSONResponse(content={"message" : "Erro ao salvar arquivo"},
+                                status_code=status.HTTP_404_NOT_FOUND)
 
 
 @router.get("/tasks/{id}")
