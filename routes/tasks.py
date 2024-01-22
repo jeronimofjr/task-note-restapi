@@ -30,15 +30,14 @@ async def save_tasks(file_path: str = Query(...)):
     try:
         tasks = db.query(Task).filter(Task.completed_at == False).all()
         if tasks:
-            print([task.title for task in tasks])
-            tasks_unco = defaultdict(list)
+            incomplete_tasks = defaultdict(list)
             for task in tasks:
-                tasks_unco["title"].append(task.title)
-                tasks_unco["description"].append(task.description)
-                tasks_unco["created_at"].append(task.created_at)
-            tasks_unco = pandas.DataFrame(tasks_unco)
+                incomplete_tasks["title"].append(task.title)
+                incomplete_tasks["description"].append(task.description)
+                incomplete_tasks["created_at"].append(task.created_at)
+            incomplete_tasks = pandas.DataFrame(incomplete_tasks)
             
-            tasks_unco.to_csv(file_path)
+            incomplete_tasks.to_csv(file_path)
             if os.path.exists(file_path):
                 return JSONResponse(content={"message" : "Arquivo salvo com sucesso"},
                                     status_code=status.HTTP_200_OK)
