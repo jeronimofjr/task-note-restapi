@@ -6,7 +6,7 @@ from database.database import db
 from datetime import datetime
 from sqlalchemy import func
 from schemas.task import TaskCreate
-import pandas
+import pandas as pd
 from collections import defaultdict
 import os
 
@@ -35,7 +35,7 @@ async def save_tasks(file_path: str = Query(...)):
                 incomplete_tasks["title"].append(task.title)
                 incomplete_tasks["description"].append(task.description)
                 incomplete_tasks["created_at"].append(task.created_at)
-            incomplete_tasks = pandas.DataFrame(incomplete_tasks)
+            incomplete_tasks = pd.DataFrame(incomplete_tasks)
             
             incomplete_tasks.to_csv(file_path)
             if os.path.exists(file_path):
@@ -189,12 +189,9 @@ async def create_task(task: TaskCreate):
 
 @router.put("/tasks/{id}")
 async def update_task(id: int = Path(..., ge=1), title: str = Body(None), description: str = Body(None)):
-    print(title)
-    print(description)
     try:
         task = db.query(Task).filter(Task.id == id).scalar()
         
-        print(task)
         if task:
             task.title = title if title else task.title
             task.description = description if description else task.description
