@@ -4,14 +4,14 @@ Para realizar os testes, é necessário a biblioteca `httpie`, informações mai
 
 ### 1. Inserir uma task
 
-#### ^Sintaxe^
+##### Sintaxe
 <!--MAIN_BEGIN-->
 ```bash
 http POST http://localhost:8000/tasks title={title} description={description}
 ```
 <!--MAIN_END-->
 
-#### ^Exemplo^
+##### Exemplo
 <!--MAIN_BEGIN-->
 ```bash
 http POST http://localhost:8000/tasks title='ETL' description='Finalizar método de validação de schema'
@@ -20,14 +20,14 @@ http POST http://localhost:8000/tasks title='ETL' description='Finalizar método
 
 ### 2. Inserir tasks via upload de arquivo csv
 
-#### ^Sintaxe^
+##### Sintaxe
 <!--MAIN_BEGIN-->
 ```bash
 http --form POST http://localhost:8000/tasks/upload file@{filename}.csv
 ```
 <!--MAIN_END-->
 
-#### ^Exemplo^
+##### Exemplo
 <!--MAIN_BEGIN-->
 ```bash
 http --form POST http://localhost:8000/tasks/upload file@'/home/jr/Música/tasks'.csv
@@ -36,7 +36,7 @@ http --form POST http://localhost:8000/tasks/upload file@'/home/jr/Música/tasks
 
 ### 3. Recuperar todas as tasks
 
-#### ^Sintaxe^
+##### Sintaxe
 <!--MAIN_BEGIN-->
 ```bash
 http GET http://localhost:8000/tasks
@@ -45,7 +45,7 @@ http GET http://localhost:8000/tasks
 
 ### 4. Recuperar task por id
 
-#### ^Sintaxe^
+##### Sintaxe
 <!--MAIN_BEGIN-->
 ```bash
 http GET http://localhost:8000/tasks/{id}
@@ -54,7 +54,7 @@ http GET http://localhost:8000/tasks/{id}
 
 ### 5. Recuperar task por data
 
-#### ^Sintaxe^
+##### Sintaxe
 <!--MAIN_BEGIN-->
 ```bash
 http GET http://localhost:8000/tasks/date/{date}
@@ -63,7 +63,7 @@ http GET http://localhost:8000/tasks/date/{date}
 
 ### 6. Deletar task por id
 
-#### ^Sintaxe^
+##### Sintaxe
 <!--MAIN_BEGIN-->
 ```bash
 http DELETE http://localhost:8000/tasks/{id}
@@ -72,7 +72,7 @@ http DELETE http://localhost:8000/tasks/{id}
 
 ### 7. Deletar tasks que já foram completadas
 
-#### ^Sintaxe^
+##### Sintaxe
 <!--MAIN_BEGIN-->
 ```bash
 http DELETE http://localhost:8000/tasks/complete
@@ -81,7 +81,7 @@ http DELETE http://localhost:8000/tasks/complete
 
 ### 8. Deletar todas as tasks
 
-#### ^Sintaxe^
+##### Sintaxe
 <!--MAIN_BEGIN-->
 ```bash
 http DELETE http://localhost:8000/tasks
@@ -91,7 +91,7 @@ http DELETE http://localhost:8000/tasks
 
 ### 9. Marcar task como completa
 
-#### ^Sintaxe^
+##### Sintaxe
 <!--MAIN_BEGIN-->
 ```bash
 http PATCH http://localhost:8000/tasks/{id}/complete
@@ -100,16 +100,14 @@ http PATCH http://localhost:8000/tasks/{id}/complete
 
 ### 10. Atualizar task a partir do id
 
-#### ^Sintaxe^
+##### Sintaxe
 <!--MAIN_BEGIN-->
 ```bash
 http PUT http://localhost:8000/tasks/{id} title={title} description={description}
 ```
 <!--MAIN_END-->
 
-
-#### ^Exemplo^
-
+##### Exemplo
 <!--MAIN_BEGIN-->
 ```bash
 http PUT http://localhost:8000/tasks/3 title='Terminar tarefa de FUP' description=' Estudar conceitos de matrizes e sua sintaxe na Linguagem C'
@@ -119,7 +117,7 @@ http PUT http://localhost:8000/tasks/3 title='Terminar tarefa de FUP' descriptio
 
 ### 11. Retornar stats relacionadas as tasks armazenadas
 
-#### ^Sintaxe^
+##### Sintaxe
 <!--MAIN_BEGIN-->
 ```bash
 http GET http://localhost:8000/tasks/resume/
@@ -128,15 +126,14 @@ http GET http://localhost:8000/tasks/resume/
 
 ### 12. Salvar tasks incompletas em arquivo CSV
 
-#### ^Sintaxe^
+##### Sintaxe
 <!--MAIN_BEGIN-->
 ```bash
 http GET http://localhost:8000/tasks/save?file_path={''}
 ```
 <!--MAIN_END-->
 
-#### ^Exemplo^
-
+##### Exemplo
 <!--MAIN_BEGIN-->
 ```bash
 http GET http://localhost:8000/tasks/save?file_path='/home/jr/Documentos/tasks.csv'
