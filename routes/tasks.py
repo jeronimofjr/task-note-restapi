@@ -112,7 +112,7 @@ async def get_tasks_by_date(date: str):
         return JSONResponse(content={"message" : "Erro ao buscar tasks"}, status_code=status.HTTP_400_BAD_REQUEST)
 
 
-@router.get("/tasks/qtd/")
+@router.get("/tasks/resume/")
 async def get_qtd_tasks():
     try:
         qtd_tasks = db.query(func.count(Task.id)).scalar()
